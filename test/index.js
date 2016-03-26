@@ -12,7 +12,7 @@ const lab = exports.lab = Lab.script();
 const expect = Lab.assertions.expect;
 
 lab.describe('create()', () => {
-  lab.it('creates a new environment', (done) => {
+  lab.it('creates a new environment', { plan: 1 }, (done) => {
     const engine = HapiJsonView.create();
 
     expect(engine).to.be.an.instanceof(Environment);

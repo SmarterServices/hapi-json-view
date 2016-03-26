@@ -14,7 +14,7 @@ const HapiJsonView = require('../src/index.js');
 const lab = exports.lab = Lab.script();
 const expect = Lab.assertions.expect;
 
-lab.describe('registerHelper()', () => {
+lab.describe('registerHelper()', { plan: 1 }, () => {
   lab.it('register the helper', (done) => {
     const environment = new Environment();
     environment.registerHelper('uppercase', () => { });
@@ -24,7 +24,7 @@ lab.describe('registerHelper()', () => {
   });
 });
 
-lab.describe('registerPartial()', () => {
+lab.describe('registerPartial()', { plan: 1 }, () => {
   lab.it('registers the partial', (done) => {
     const environment = new Environment();
     environment.registerPartial('author', 'json.set(\'name\', author.name);');
@@ -35,43 +35,40 @@ lab.describe('registerPartial()', () => {
 });
 
 lab.describe('compile()', () => {
-  lab.it('renders a template', (done) => {
+  lab.it('renders a template', { plan: 2 }, () => {
     const server = new Hapi.Server();
     server.connection();
 
-    server.register(Vision, (err) => {
-      if (err) {
-        return done(err);
-      }
-
-      server.views({
-        engines: {
-          tmpl: {
-            module: HapiJsonView.create(),
-            contentType: 'application/json',
+    return server.register(Vision)
+      .then(() => {
+        server.views({
+          engines: {
+            tmpl: {
+              module: HapiJsonView.create(),
+              contentType: 'application/json'
+            }
           },
-        },
-        path: Path.join(__dirname, 'templates'),
-        helpersPath: Path.join(__dirname, 'templates/helpers'),
-        partialsPath: Path.join(__dirname, 'templates/partials'),
-      });
+          path: Path.join(__dirname, 'templates'),
+          helpersPath: Path.join(__dirname, 'templates/helpers'),
+          partialsPath: Path.join(__dirname, 'templates/partials')
+        });
 
-      server.route({
-        method: 'GET',
-        path: '/',
-        handler: function(request, reply) {
-          const article = { title: 'example' };
-          const author = { name: 'example' };
+        server.route({
+          method: 'GET',
+          path: '/',
+          handler(request, reply) {
+            const article = { title: 'example' };
+            const author = { name: 'example' };
 
-          reply.view('article.tmpl', { article: article, author: author });
-        },
-      });
+            reply.view('article.tmpl', { article, author });
+          }
+        });
 
-      server.inject('/', (res) => {
+        return server.inject('/');
+      })
+      .then((res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.result).to.equal('{"title":"EXAMPLE","author":{"name":"example"}}');
-        done();
       });
-    });
   });
 });

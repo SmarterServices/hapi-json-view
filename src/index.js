@@ -3,6 +3,6 @@
 // Load internal modules
 const Environment = require('./environment');
 
-exports.create = function() {
+exports.create = function () {
   return new Environment();
 };

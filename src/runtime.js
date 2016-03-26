@@ -35,7 +35,9 @@ class Runtime {
   }
 
   extract(object, keys) {
-    keys.forEach((key) => this.content[key] = object[key]);
+    keys.forEach((key) => {
+      this.content[key] = object[key];
+    });
   }
 
   helper(name /* , args */) {
@@ -55,7 +57,10 @@ class Runtime {
     keys.unshift('json');
     values.unshift(this);
 
-    const executor = new Function(keys.join(', '), `${template}\nreturn json.content;`);
+    const args = keys.join(', ');
+    const body = `${template}\nreturn json.content;`;
+
+    const executor = new Function(args, body); // eslint-disable-line no-new-func
     return executor.apply(null, values);
   }
 }
