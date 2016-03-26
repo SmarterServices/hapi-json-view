@@ -1,0 +1,37 @@
+{
+  "name": "@ideapod/hapi-json-view",
+  "version": "0.0.0",
+  "description": "JSON view engine for hapi.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "lab --assert code --lint --threshold 100 --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ideas/hapi-json-view.git"
+  },
+  "keywords": [
+    "hapi",
+    "json",
+    "view"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ideas/hapi-json-view/issues"
+  },
+  "homepage": "https://github.com/ideas/hapi-json-view",
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "peerDependencies": {
+    "hapi": ">=13.x.x",
+    "vision": ">=4.x.x"
+  },
+  "devDependencies": {
+    "@ideapod/eslint-config": "2.1.x",
+    "code": "2.1.x",
+    "hapi": "13.2.x",
+    "lab": "10.3.x",
+    "vision": "4.0.x"
+  }
+}
