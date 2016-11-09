@@ -1,5 +1,5 @@
 {
-  "name": "@ideapod/hapi-json-view",
+  "name": "hapi-json-view",
   "version": "1.0.0",
   "description": "JSON view engine for hapi.",
   "main": "src/index.js",
